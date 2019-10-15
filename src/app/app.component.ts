@@ -21,17 +21,18 @@ export class AppComponent implements OnInit {
   getDoctors(): void {
     this.doctorService.getDoctors()
       .subscribe(doctors => {
-        // the member variables below will hold collections of doctors that are bound to the app.component.html template
-        this.familyPracticeDoctors = this.processDoctorArray(doctors, '');
-        this.pediatricDoctors = this.processDoctorArray(doctors, '');
+        this.familyPracticeDoctors = this.processDoctorArray(doctors, 'FamilyPractice');
+        this.pediatricDoctors = this.processDoctorArray(doctors, 'Pediatrics');
       });
   }
 
-  processDoctorArray(doctors, practiceType): Doctor[] {
+  processDoctorArray(doctors, practiceType: string): Doctor[] {
     console.log(doctors);
 
-     // Implement your code here
+    let doctorList = doctors.filter(doctor => 
+      doctor.specialty == practiceType
+    )
 
-    return doctors;
+   return doctorList.sort((a, b) => (a.reviewCount < b.reviewCount) ? 1 : -1)
   }
 }
